@@ -17,7 +17,7 @@ We assume the reader is already familiar with [elliptic curve point addition](ht
 
 Notation-wise, capital letters are elliptic curve points, lowercase letters are finite field elements.
 
-We say $A$ is an elliptic curve (EC) point, a is a [finite field](https://www.rareskills.io/post/finite-fields) element, and $aA$ is point multiplication between finite field element $a$ and EC point $A$. The expression $A + B$ denotes elliptic curve point addition.
+We say $A$ is an elliptic curve (EC) point, $a$ is a [finite field](https://www.rareskills.io/post/finite-fields) element, and $aA$ is point multiplication between finite field element $a$ and EC point $A$. The expression $A + B$ denotes elliptic curve point addition.
 
 ## Traditional commitments
 When we design commit reveal functions in smart contracts, they are usually of the form
@@ -32,13 +32,13 @@ For example, if we were committing a vote, there are only a limited number of ch
 
 The academic terminology for the *salt* variable in the case of Pedersen commitments is the *blinding factor*. Because it is random, the attacker is "blinded" from being able to guess the value committed.
 
-Because the value "commitment" cannot be guess by an adversary, we say this commitment scheme is *hiding*.
+Because the value "commitment" cannot be guessed by an adversary, we say this commitment scheme is *hiding*.
 
 During the reveal phase, the committer reveals the value and the salt, so the other party (or smart contract) can validate that it matches the original commitment. It isn't possible to obtain another $(\text{value}, \text{salt})$ pair that can result in the same commitment, so we say this scheme is binding – the committer cannot change (i.e. is bound to) their committed value after the fact.
 
 A $(\text{value}, \text{salt})$ pair that results in the hash is called the *opening*. To say that someone "knows an opening to the commitment" means they know (value, salt). To *reveal* $(\text{value}, \text{salt})$ means to *open* the commitment.
 
-When discussing Pedersen commitments, there is a distinction between *knowing the opening* and *opening* the commitment. We usually want to prove we *know* the opening, but not necessarily *open* it.
+When discussing Pedersen commitments, there is a distinction between *knowing* the opening and *opening* the commitment. We usually want to prove we *know* the opening, but not necessarily *open* it.
 
 ## Terminology summary
 - A **hiding** commitment does not allow an adversary to know what value was selected by the commiter. This is usually accomplished by including a random term that the attacker cannot guess.
@@ -49,7 +49,7 @@ When discussing Pedersen commitments, there is a distinction between *knowing th
 ## Pedersen Commitments
 Pedersen commitments behave very similar to the commit-reveal scheme described earlier, except that they use elliptic curve groups instead of cryptographic hash functions.
 
-Under the discrete logarithm assumption, given elliptic curve points $V$ and $U$, we cannot compute $x$ where $V$ = $xU$. That is to say, we do not know their *discrete log relationship*, i.e. how many times $V$ needs to be added to itself to get $U$.
+Under the discrete logarithm assumption, given elliptic curve points $V$ and $U$, we cannot compute $x$ where $V$ = $xU$. That is to say, we do not know their *discrete log relationship*, i.e. how many times $U$ needs to be added to itself to get $V$.
 
 We still refer to $u$ as the discrete logarithm of $U$ even though we cannot compute it, because we know it exists. All (cryptographic) elliptic curve points have a discrete logarithm, even if they cannot be computed.
 
@@ -57,18 +57,18 @@ In this sense, elliptic curve point multiplication behaves like a hash function.
 
 However, if the range of discrete logarithms is small and bound by the context of the application (such as vote choices), then the discrete logarithm might become guessable.
 
-We can make a The Pedersen hiding in the following manner:
+We can make a Pedersen commitment hiding in the following manner:
 
 $$
 \text{commitment} = vG + sB
 $$
 
-where $v$ is the value we are committing and $s$ is the salt (or blinding factor) and $B$ is another elliptic curve point that the committer does not know the discrete logarithm of.
+where $v$ is the value we are committing and $s$ is the salt (or blinding factor) and $B$ is another elliptic curve point such that the committer does not know the discrete logarithm relationship between $B$ and $G$.
 
 We should emphasize that although the discrete logarithms are unknown, the points $G$ and $B$ are public and known to both the verifier and the committer.
 
-### Why the committer must not know the discrete logarithm of an EC point
-Suppose the committer knows the discrete logarithm relationship between $B$ and $G$. That is, they know $u$ such that $B = uG$.
+### Why the committer must not know the discrete logarithm relationship between $B$ and $G$
+Suppose the committer knows $b$ such that $B = bG$.
 
 In that case, they can open the commitment 
 
@@ -78,12 +78,9 @@ $$
 
 to a different $(v', s')$ other than the value they originally committed.
 
-Here's how the committer could cheat if they know that $g$ is the discrete logarithm of $G$ and $b$ is the discrete logarithm of $B$.
+Here's how the committer could cheat if they know that $b$ is the discrete logarithm of $B$.
 $$
 B = bG 
-$$
-$$
-G = gB 
 $$
 
 The committer can rewrite the commitment equation:
@@ -117,9 +114,9 @@ $$
 \text{commitment} &= \text{commitment} \\
 \end{align*}
 $$
-**The committer must not know the discrete logarithm relationship between the elliptic curve points they are using.**
+**Therefore, the committer must not know the discrete logarithm relationship between the elliptic curve points they are using.**
 
-One way to accomplish this is to have a verifier supply the elliptic curve points for the committer. A simpler way however is to pick the elliptic curve points in a random and transparent way, such as by pseudorandomly selecting elliptic curve points. Given a random elliptic curve point, we do not know its discrete logarithm.
+One way to accomplish this is to have a verifier supply the elliptic curve points for the committer. A simpler way, however, is to pick the elliptic curve points in a random and transparent way, such as by pseudorandomly selecting elliptic curve points. Given a random elliptic curve point, we do not know its discrete logarithm.
 
 For example, we could start with the generator point, hash the $x$ and $y$ values, then use that to seed a pseudorandom but deterministic search for the next point.
 
@@ -131,7 +128,7 @@ This scheme has a couple advantages.
 ### Pedersen commitments are additively homomorphic
 Given a point $G$, we can add two commitments together $a_1G + a_2G$ = $(a_1 + a_2)G$.
 
-If we include random blinding terms, we can still do a valid opening by adding the blinding terms together and providing that to the verifier. Let $C$ be commitments. Now consider what happens when we add $C_1 + C_2$ together:
+If we include random blinding terms, we can still do a valid opening by adding the blinding terms together and providing that to the verifier. Let $C_1$ and $C_2$ be commitments. Now consider what happens when we add $C_1 + C_2$ together:
 
 $$
 \begin{aligned}
@@ -157,19 +154,19 @@ Given two Pedersen commitments that use the same elliptic curve points to commit
 Pedersen commitments allow a prover to make claims about the sums of committed values.
 
 ### We can encode as many points as we like in a single point
-Our example of using $G$ and $B$ can also be thought of a 2D vector commitment without a blinding term. But we can add as many elliptic curve points as we like $[G₁, G₂, …, Gₙ]$ and commit as many scalars as we like. (Here, $G_1$, $G_2$, etc mean different points in the same group, not generators of different groups).
+Our example of using $G$ and $B$ can also be thought of as a 2D vector commitment without a blinding term. But we can add as many elliptic curve points as we like $[G₁, G₂, …, Gₙ]$ and commit as many scalars as we like. (Here, $G_1$, $G_2$, etc mean different points in the same group, not generators of different groups).
 
 ## Pedersen Vector Commitments
 We can take the above scheme a step further and commit a set of values rather than a value and a blinding term.
 
-## Vector commitment scheme
+### Vector commitment scheme
 Suppose we have a set of random elliptic curve points $(G₁,…,Gₙ)$ (that we do not know the discrete logarithm of), and we do the following:
 
-$$C_1 = \underbrace{v_1G_1 + v_2G_2 + … + v_nG_n}_\text{committed vector} + \underbrace{sB}_\text{blinding term}$$
+$$C = \underbrace{v_1G_1 + v_2G_2 + … + v_nG_n}_\text{committed vector} + \underbrace{sB}_\text{blinding term}$$
 
 This lets us commit $n$ values to $C$ and hide it with $s$.
 
-Since the committer does not know the discrete logarithm of any of $G_i$, they don’t know the discrete logarithm of $C$. Hence, this scheme is binding: they can only reveal $(v₁,…,vₙ)$ to produce $C$ later, they cannot produce another vector.
+Since the committer does not know the discrete logarithm of any $G_i$, they don’t know the discrete logarithm of $C$. Hence, this scheme is binding: they can only reveal $(v₁,…,vₙ)$ to produce $C$ later, they cannot produce another vector.
 
 ### Vector commitments can be combined
 We can add two Pedersen Vector Commitments to get one commitment to two vectors. This will still only allow the committer to open to the original vectors. The important implementation detail is that we have to use a different set of elliptic curve points to commit against.
@@ -209,7 +206,7 @@ That is, they switch the first two elements leaving everything else unchanged. A
 ## Generating random points transparently
 How can we generate these random elliptic curve points? One obvious solution is to use a trusted setup, but this isn’t necessary. The committer is able to set up the points in a way they cannot know their discrete logarithm by randomly selecting the points in a transparent way.
 
-They can pick the generator point, mix in a publicly chosen random number, and hash that result (and take it modulo the field_modulus) to obtain another value. if that results in an x value that lies on the elliptic curve, use that as the next generator and hash the $(x, y)$ pair again. Otherwise, if the x-value does not land on the curve, increment $x$ until it does. Because the committer is not generating the points, they don’t know their discrete log.
+They can pick the generator point, mix in a publicly chosen random number, and hash that result (and take it modulo the field modulus) to obtain another value. If that results in an $x$-value that lies on the elliptic curve, use that as the next generator and hash the $(x, y)$ pair again. Otherwise, if the $x$-value does not land on the curve, increment $x$ until it does. Because the committer is not generating the points, they don’t know their discrete log.
 
 **Exercise:** Adjust the following code to generate `n` points with unknown discrete logs:
 ```python
@@ -244,7 +241,7 @@ x = int(sha256(str(x).encode('ascii')).hexdigest(), 16) % field_mod
 print(vector_basis)
 ```
 
-At no point should you generate a point by picking a scalar and them multiplying it with the generator, as that would lead to the discrete logarithm being known. You need to select the $x$ values of the curve point pseudorandomly via a hash function and figure out if it is on the curve.
+At no point should you generate a point by picking a scalar and then multiplying it with the generator, as that would lead to the discrete logarithm being known. You need to select the $x$ values of the curve point pseudorandomly via a hash function and figure out if it is on the curve.
 
 It is okay to start with the generator (which has a known discrete logarithm of 1) and generate the other points.
 
