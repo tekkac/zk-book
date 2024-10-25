@@ -75,6 +75,7 @@ Bulletproofs are in a sense, "simpler" than SNARKs, so they are a great way to b
 Chapters 1 introduces the Pedersen Commitment, which is the foundational building block of Bulletproofs. Chapters 2-4 show how to accomplish an inner product proof with zero knowledge, but not succinctness (the proof size is $\mathcal{O}(n)$ where $n$ is the size of the vectors). Chapters 5-6 show how to prove knowledge of an inner product without ZK, but with a proof size logarithmic in the number the size of $n$. Chapter 7 shows the core Bulletproofs algorithm. Chapter 8 and 9 are prerequisites for chapter 10 where we show how to construct a range proof without the use of an arithmetic circuit.
 
 1. [Pedersen Commitments](https://www.rareskills.io/post/pedersen-commitment) Pedersen Commitments are what we called the "hash" at the beginning of this article. They are more composable than traditional hash functions however, as they are additively homomorphic. That is, we can commit 2 to $A$ and 5 to $B$ and "reveal" 7 to $A + B$.
+2. [Pedersen Commitments for Polynomials](https://www.rareskills.io/post/pedersen-polynomial-commitment) By creating Pedersen commitments of the coefficients of a polynomial, we can prove we 1) committed to a polynomial and 2) evaluated it correctly without revealing the original polynomial.
 (to be continued!)
 
 ### Acknowledgements
