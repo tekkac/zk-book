@@ -74,9 +74,14 @@ Bulletproofs are in a sense, "simpler" than SNARKs, so they are a great way to b
 ## Table of Contents
 Chapters 1 introduces the Pedersen Commitment, which is the foundational building block of Bulletproofs. Chapters 2-4 show how to accomplish an inner product proof with zero knowledge, but not succinctness (the proof size is $\mathcal{O}(n)$ where $n$ is the size of the vectors). Chapters 5-6 show how to prove knowledge of an inner product without ZK, but with a proof size logarithmic in the number the size of $n$. Chapter 7 shows the core Bulletproofs algorithm. Chapter 8 and 9 are prerequisites for chapter 10 where we show how to construct a range proof without the use of an arithmetic circuit.
 
-1. [Pedersen Commitments](https://www.rareskills.io/post/pedersen-commitment) Pedersen Commitments are what we called the "hash" at the beginning of this article. They are more composable than traditional hash functions however, as they are additively homomorphic. That is, we can commit 2 to $A$ and 5 to $B$ and "reveal" 7 to $A + B$.
-2. [Pedersen Commitments for Polynomials](https://www.rareskills.io/post/pedersen-polynomial-commitment) By creating Pedersen commitments of the coefficients of a polynomial, we can prove we 1) committed to a polynomial and 2) evaluated it correctly without revealing the original polynomial.
+1. Introduction to Bulletproofs (this chapter)
+2. [Pedersen Commitments](https://www.rareskills.io/post/pedersen-commitment) Pedersen Commitments are what we called the "hash" at the beginning of this article. They are more composable than traditional hash functions however, as they are additively homomorphic. That is, we can commit 2 to $A$ and 5 to $B$ and "reveal" 7 to $A + B$.
+3. [Polynomial Commitments via Pedersen Commitments](https://www.rareskills.io/post/pedersen-polynomial-commitment) By creating Pedersen commitments of the coefficients of a polynomial, we can prove we 1) committed to a polynomial and 2) evaluated it correctly without revealing the original polynomial.
+4. [Zero Knowledge Multiplication](https://www.rareskills.io/post/zk-multiplication) We can verify that two polynomials were multiplied together correctly by 1) committing them, 2) evaluating them, and 3) checking that the evaluations of the first two multiply to the third. By having a scheme for multiplying polynomials together (with zero knowledge), we also get scalar multiplication for free.
+
 (to be continued!)
+
+We recommend that you fork [this Bulletproofs ZK repo](https://github.com/RareSkills/ZK-bulletproofs) and do the exercises as you read, so that you can immediately practice what you learn.
 
 ### Acknowledgements
 The excellent [documentation of the Rust Bulletproofs crate](https://doc-internal.dalek.rs/bulletproofs/) by Henry de Valence, Cathie Yun, and Oleg Andreev provided helpful pointers where the paper was unclear and we sometimes use their notation, which in some cases is more intuitive than the original paper. The reader may find that resource useful as an alternative angle on Bulletproofs.
