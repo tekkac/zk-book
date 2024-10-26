@@ -9,7 +9,8 @@ For this algorithm to work, the verifier must believe that the polynomial evalua
 At a high level, the prover commits to $l(x)$, $r(x)$, and $t(x)$ and sends the commitments to the verifier. Then, the verifier chooses a random value for $x$ as $u$ and asks the prover to evaluate the polynomials at $u$. The verifier then checks that the evaluations were done correctly and that the evaluation for $l(x)$ multiplied by the evaluation for $r(x)$ equals the evaluation for $t(x)$.
 
 For example, suppose that the first polynomial is $l(x)=2x$ and the second is $r(x) = x + 1$. Then $t(x)=2x(x+1) = 2x^2+2$. The verifier can sample any random $x$ value, and the result of product of the output of $l(x)r(x)$ will be $t(x)$. The plot below shows an example of the verifier choosing $x=2$: 
-![random-polynomial-multiplication](https://hackmd.io/_uploads/SytI8o4gJe.png)
+
+![random-polynomial-multiplication](https://pub-32882f615aa84e4a94e1279ccf3ab85a.r2.dev/zk-multiplication/polynomial-multiplication.png)
 
 The verifier would then check that $3 \times 4 = 12$ and accept the prover's claim.
 
