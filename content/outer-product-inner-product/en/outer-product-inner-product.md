@@ -114,7 +114,7 @@ The identity also holds if one of the vectors is a vector of elliptic curve poin
 
 For cases where $n > 2$, proving knowledge of an inner product means the prover needs to convince the verifier they know the "area" of the purple-shaded region below.
 
-![a square matrix with every entry shaded except the main diagonal]([https://hackmd.io/_uploads/BJmInb6g1g.png](https://pub-32882f615aa84e4a94e1279ccf3ab85a.r2.dev/bulletproofs-06/off-product-shade.png))
+![a square matrix with every entry shaded except the main diagonal](https://pub-32882f615aa84e4a94e1279ccf3ab85a.r2.dev/bulletproofs-06/off-product-shade.png)
 
 Conveying this information succinctly when $n > 2$ is tricker, so we will revisit this later.
 
@@ -374,7 +374,9 @@ R &= R_1 + R_2 + R_3 + R_4\\
 
 The operation described is shown in the animation below:
 
-![An animation showing how A, L, and R are computed when n > 2]([https://hackmd.io/_uploads/S1P0f9Xlye.gif](https://pub-32882f615aa84e4a94e1279ccf3ab85a.r2.dev/bulletproofs-06/outerproduct-anim.mp4))
+<video autoplay loop muted controls>
+    <source src="https://pub-32882f615aa84e4a94e1279ccf3ab85a.r2.dev/bulletproofs-06/outerproduct-anim.mp4" type="video/mp4">
+</video>
 
 ### Security of adding all the commitments and off-diagonals together
 An initial concern with such an optimization is that since the prover is adding more terms together, there is more opportunity to hide a dishonest computation.
@@ -385,8 +387,7 @@ Observe that $L$ is computed as $L = a_1G_2 + a_3G_4 +a_5G_6+a_7G_8$ and $R$ is 
 
 $A$ is the addition of four Pedersen commitments (the commitments to the vectors $[a_1, a_2]$, $[a_3, a_4]$, $[a_5, a_6]$, $[a_7, a_8]$). However, the fact that several Pedersen commitments are added together is immaterial from a security perspective. It makes no difference if the commitments are computed separately and then added, or $A$ is computed as a vector of $n = 8$. Consider that:
 
-$$
-\begin{align*}
+$$\begin{align*}
 &\space a_1G_1 + a_2G_2\space + \space a_3G_3 + a_4G_4\space\space + \space\space a_5G_5 + a_6G_6\space + \space a_7G_7 + a_8G_8\\
 =&(a_1G_1 + a_2G_2) + (a_3G_3 + a_4G_4) + (a_5G_5 + a_6G_6) + (a_7G_7 + a_8G_8)\end{align*}$$
 
@@ -411,7 +412,7 @@ $P$ is a commitment to the original vector $\mathbf{a}$ with respect to the basi
 The sum $Lu^2 + P + Ru^{-2}$ is itself a vector commitment of the vector $\mathsf{fold}(\mathbf{a},u)$ to the basis $\mathsf{fold}(\mathbf{G}, u^{-1})$, which has size $n/2$.
 
 We show the relationship graphically below:
-![a graphic showing the relationship between a vector commitment and a folded vector commitment]([https://hackmd.io/_uploads/HJPpWqLlye.png](https://pub-32882f615aa84e4a94e1279ccf3ab85a.r2.dev/bulletproofs-06/folded-commitment.png))
+![a graphic showing the relationship between a vector commitment and a folded vector commitment]([https://hackmd.io/_uploads/HJPpWqLlye.png](https://pub-32882f615aa84e4a94e1279ccf3ab85a.r2.dev/bulletproofs-06/folded-commitment.png)
 
 To prove we know the opening to a commitment of size $n/2$, we can simply send the vector of size $n/2$, which in this case is $\mathsf{fold}(\mathbf{a},u)$.
 
