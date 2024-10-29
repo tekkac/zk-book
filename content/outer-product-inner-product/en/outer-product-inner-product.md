@@ -132,7 +132,9 @@ The interaction between the prover and the verifier is as follows:
 2. The prover adds up all the terms in $\mathbf{a}$ and sends that as $a' = a_1 + a_2$ to the verifier (note that the sum of the components of a vector is a scalar, hence the summing the elements of $\mathbf{a}$ results in scalar $a'$). Furthermore, the prover computes the off-diagonal terms of $\mathbf{a} \otimes \mathbf{G}$ (i.e. $R = a_2G_1$, $L = a_1G_2$) and sends $L$ and $R$ to the verifier.
 
 Graphically, $L$ and $R$ can be seen as follows:
-$$\begin{array}{|c|c|c|}
+
+$$
+\begin{array}{|c|c|c|}
 \hline
 &a_1&a_2\\
 \hline
@@ -140,9 +142,10 @@ G_1&&R\\
 \hline
 G_2&L&\\
 \hline
-\end{array}$$
+\end{array}
+$$
 
-5. The verifier indirectly computes $\mathbf{a} \otimes \mathbf{G}$ by computing $a'G'$ where $G' = G_1 + G_2$ and checks that
+3. The verifier indirectly computes $\mathbf{a} \otimes \mathbf{G}$ by computing $a'G'$ where $G' = G_1 + G_2$ and checks that
 
 $$\underbrace{a'G'}_\text{outer product sum} = \underbrace{A}_\text{inner product} + \underbrace{L + R}_\text{off-diagonal terms}$$
 
