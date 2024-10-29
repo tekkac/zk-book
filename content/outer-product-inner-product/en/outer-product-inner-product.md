@@ -390,7 +390,6 @@ $$
 &\space a_1G_1 + a_2G_2\space + \space a_3G_3 + a_4G_4\space\space + \space\space a_5G_5 + a_6G_6\space + \space a_7G_7 + a_8G_8\\
 =&(a_1G_1 + a_2G_2) + (a_3G_3 + a_4G_4) + (a_5G_5 + a_6G_6) + (a_7G_7 + a_8G_8)\end{align*}$$
 
-<fix>
 For example, the prover might "shift value" from $a_1G_1$ to $a_2G_1$.
 
 The only remaining concern is that the prover could shift value from $a_1G_1$ in $A$ to $a_2G_1$ in $L$ since they share a common elliptic curve point. However, this is prevented by the randomness $u$ from the verifier as shown previously.
