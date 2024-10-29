@@ -34,7 +34,7 @@ a_1\\a_2\\a_3
 \end{matrix}
 $$
 
-In other words, multiplying an $n \times m$ matrix by a $n$ dimensional vector is the same as computing $n$ inner products. So if we can directly prove an inner product was computed correctly, then we don't need the additional steps of creating a Quadratic Arithmetic Program.
+In other words, multiplying an $n \times m$ matrix by an $n$ dimensional vector is the same as computing $n$ inner products. So if we can directly prove an inner product was computed correctly, then we don't need the additional steps of creating a Quadratic Arithmetic Program.
 
 Furthermore, Bulletproofs do not use [pairings](https://www.rareskills.io/post/bilinear-pairing) (only basic [elliptic curve addition](https://www.rareskills.io/post/elliptic-curve-addition)) and do not require a [trusted setup](https://www.rareskills.io/post/trusted-setup).
 
@@ -43,7 +43,7 @@ The size of the proof is logarithmic in the number of multiplications, unlike th
 
 The primary drawback of Bulletproofs is that the runtime of the verifier is linear in the size of the circuit. This is because the work that would have been accomplished by the trusted setup now has to be done by the verifier.
 
-## ZK without arithmetic circuits
+## ZK Without Arithmetic Circuits
 One major advantage of inner products is that they can model some problems "directly" -- i.e. -- they don't need an arithmetic circuit.
 
 For example, proving that a number $v$ is less than $2^n$ can be done by showing that $v$ has a binary representation of $\mathbf{b}$, and the inner product of $\mathbf{b}$ and the vector $[1,2,4,8,...,2^{n-1}]$ is $v$. This directly implies that $v < 2^n$. For example, if the vector of powers of 2 is $[1,2,4,8,16,32,64,128]$, then we know that $v$ must be less than 256, for the same reason that a `uint8` cannot hold values larger than 255. But since $\mathbf{b}$ is hidden, we don't know the actual value of $v$. This is called a *range proof* because we know $v$ is in the range $[0,255]$ without knowing the actual value.
@@ -52,13 +52,13 @@ If we were instead to create an arithmetic circuit for the range proof, this wou
 
 *For readers familiar with NP-Completeness, the Subset Sum problem can also be modeled directly with an inner product argument. Any problem in NP can be reduced to a Subset Sum instance and the solution can be proven with an inner product argument. In some cases, that reduction may be more efficient than an arithmetic circuit.*
 
-## Bulletproofs in practice
+## Bulletproofs in Practice
 The privarcy blockchain Monero uses the range proof described above to ensure that transactions do not have negative values in the input (i.e. an overflow in the finite field). ZCash uses Bulletproofs as a replacement for the SNARK polynomial commitment using a PLONKish circuit.
 
 The linear runtime of Bulletproofs make them unsuitable for use in smart contracts on Ethereum mainnet. However, for protocols that need a fast proof generation and verification of a small problem -- such as a range proof, Bulletproofs are hard to beat.
 
 ## The RareSkills ZK Book on Bulletproofs
-Our walkthrough of Bulletproofs is based on the original [Bulletproofs paper](https://eprint.iacr.org/2017/1066.pdf). The paper is very well organized, but it is extremely dense as it is targeted to professional cryptography researchers and assumes considerable background knowledge. Our collection of Bulletproof tutorials is largely a translation of the paper to a version senior web3 developers can understand. We create entire tutorials for the prerequisites the paper implicitly assumes the reader has.
+Our walkthrough of Bulletproofs is based on the original [Bulletproofs paper](https://eprint.iacr.org/2017/1066.pdf). The paper is very well organized, but it is extremely dense as it is targeted at professional cryptography researchers and assumes considerable background knowledge. Our collection of Bulletproof tutorials is largely a translation of the paper to a version senior web3 developers can understand. We create entire tutorials for the prerequisites the paper implicitly assumes the reader has.
 
 As usual, we strive to provide an intuitive mental model of the algorithm, and not simply recite the steps the algorithm takes. Where suited, we include mathematical animations to make the explanation more efficient. At all costs, we avoid oversimplification so that you have a full intuition of what each step of the algorithm accomplishes.
 
@@ -72,10 +72,10 @@ We include accompanying "fill in the blank" Python coding exercises so that you 
 Bulletproofs are in a sense, "simpler" than SNARKs, so they are a great way to build confidence in understanding the field of ZK.
 
 ## Table of Contents
-Chapters 1 introduces the Pedersen Commitment, which is the foundational building block of Bulletproofs. Chapters 2-4 show how to accomplish an inner product proof with zero knowledge, but not succinctness (the proof size is $\mathcal{O}(n)$ where $n$ is the size of the vectors). Chapters 5-6 show how to prove knowledge of an inner product without ZK, but with a proof size logarithmic in the number the size of $n$. Chapter 7 shows the core Bulletproofs algorithm. Chapter 8 and 9 are prerequisites for chapter 10 where we show how to construct a range proof without the use of an arithmetic circuit.
+Chapter 2 introduces the Pedersen Commitment, which is the foundational building block of Bulletproofs. Chapters 3-5 show how to accomplish an inner product proof with zero knowledge, but not succinctness (the proof size is $\mathcal{O}(n)$ where $n$ is the size of the vectors). Chapters 6-7 show how to prove knowledge of an inner product without ZK, but with a proof size logarithmic in $n$. Chapter 8 shows the core Bulletproofs algorithm. Chapter 9 and 10 are prerequisites for chapter 11 where we show how to construct a range proof without the use of an arithmetic circuit.
 
 1. Introduction to Bulletproofs (this chapter)
-2. [Pedersen Commitments](https://www.rareskills.io/post/pedersen-commitment) Pedersen Commitments are what we called the "hash" at the beginning of this article. They are more composable than traditional hash functions however, as they are additively homomorphic. That is, we can commit 2 to $A$ and 5 to $B$ and "reveal" 7 to $A + B$.
+2. [Pedersen Commitments](https://www.rareskills.io/post/pedersen-commitment) Pedersen Commitments are what we called the "hash" at the beginning of this article. They are more composable than traditional hash functions, however, as they are additively homomorphic. That is, we can commit 2 to $A$ and 5 to $B$ and "reveal" 7 to $A + B$.
 3. [Polynomial Commitments via Pedersen Commitments](https://www.rareskills.io/post/pedersen-polynomial-commitment) By creating Pedersen commitments of the coefficients of a polynomial, we can prove we 1) committed to a polynomial and 2) evaluated it correctly without revealing the original polynomial.
 4. [Zero Knowledge Multiplication](https://www.rareskills.io/post/zk-multiplication) We can verify that two polynomials were multiplied together correctly by 1) committing them, 2) evaluating them, and 3) checking that the evaluations of the first two multiply to the third. By having a scheme for multiplying polynomials together (with zero knowledge), we also get scalar multiplication for free.
 5. [Inner Product Arguments](https://www.rareskills.io/post/inner-product-argument) Now that we have the mechanism to do zero knowledge proofs for multiplication, it is only a small change to support zero knowledge proofs for the inner product. Specifically, we change the scalar coefficient polynomials to "vector polynomials" and do vector commitments instead of scalar commitments for the coefficients. We also define an operation of "vector polynomial inner product" that enables us to accomplish the inner product argument. While zero knowledge, this argument is not yet succinct.
@@ -86,4 +86,4 @@ Chapters 1 introduces the Pedersen Commitment, which is the foundational buildin
 We recommend that you fork [this Bulletproofs ZK repo](https://github.com/RareSkills/ZK-bulletproofs) and do the exercises as you read, so that you can immediately practice what you learn.
 
 ### Acknowledgements
-The excellent [documentation of the Rust Bulletproofs crate](https://doc-internal.dalek.rs/bulletproofs/) by Henry de Valence, Cathie Yun, and Oleg Andreev provided helpful pointers where the paper was unclear and we sometimes use their notation, which in some cases is more intuitive than the original paper. The reader may find that resource useful as an alternative angle on Bulletproofs.
+The excellent [documentation of the Rust Bulletproofs crate](https://doc-internal.dalek.rs/bulletproofs/) by Henry de Valence, Cathie Yun, and Oleg Andreev provided helpful pointers where the paper was unclear and we sometimes use their notation, which in some cases is more intuitive than the notation in the original paper. The reader may find that resource useful as an alternative angle on Bulletproofs.
