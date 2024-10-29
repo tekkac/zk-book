@@ -346,7 +346,7 @@ R_4 &= a_8G_7\\
 \end{align*}$$
 
 Graphically, that can be seen as follows:
-\begin{array}{c|c|}
+$$\begin{array}{c|c|}
 &a_1 & a_2 & a_3 & a_4 & a_6 & a_6 & a_7 & a_8\\
 \hline
 G_1&&R_1\\
@@ -365,7 +365,7 @@ G_7&&&&&&&&R_4\\
 \hline
 G_8&&&&&&&L_4\\
 \hline
-\end{array}
+\end{array}$$
 
 As a (key!) optimization, we add up all the $A_i$, $L_i$ and $R_i$ terms from each of the pairs to become the single points $A$, $L$, $R$. In other words, the prover only sends:
 
