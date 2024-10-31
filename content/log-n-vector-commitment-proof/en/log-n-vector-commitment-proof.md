@@ -10,7 +10,7 @@ There are $\mathcal{O}(n^2)$ such terms, so doing this directly is not efficient
 
 However, observe that we can "fill up the outer product" in the manner shown in the animation below:
 
-<video src="https://pub-32882f615aa84e4a94e1279ccf3ab85a.r2.dev/bulletproofs-07/MatrixFoldingAnimation.mp4" type="video/mp4" autoplay loop muted controls>
+<video src="https://pub-32882f615aa84e4a94e1279ccf3ab85a.r2.dev/bulletproofs-07/MatrixFoldingAnimation.mp4" type="video/mp4" autoplay loop muted controls></video>
 
 In the animation above, after the prover sends the off-diagonal terms, the prover folds both $\mathbf{G}$ and $\mathbf{a}$, reducing their length by half.
 
