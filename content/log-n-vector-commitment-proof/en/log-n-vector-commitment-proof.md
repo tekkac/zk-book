@@ -141,7 +141,7 @@ In practice, we don't *actually* concatenate the vectors because the total lengt
 
 We show the algorithm in the animation below:
 
-<video src="https://pub-32882f615aa84e4a94e1279ccf3ab85a.r2.dev/bulletproofs-07/ThreeWayInnerProduct.mp4" type="video/mp4" autoplay loop muted controls>
+<video src="https://pub-32882f615aa84e4a94e1279ccf3ab85a.r2.dev/bulletproofs-07/ThreeWayInnerProduct.mp4" type="video/mp4" autoplay loop muted controls></video>
 
 ## The algorithm
 Given $v = \langle\mathbf{a},\mathbf{b}\rangle$ and commitment $P = vQ+\langle\mathbf{a},\mathbf{G}\rangle + \langle\mathbf{b},\mathbf{H}\rangle$ we wish to prove that $P$ is committed as claimed. That is, $v$, $\mathbf{a}$, and $\mathbf{b}$ are committed to $P$ and $\langle\mathbf{a},\mathbf{b}\rangle=v$.
