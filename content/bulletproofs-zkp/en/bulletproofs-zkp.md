@@ -69,11 +69,13 @@ $$
 
 Previously, the prover transmits $(\mathbf{l}_u, \mathbf{r}_u, t_u, \pi_{lr}, \pi_t)$ so the verifier could check that 
 
+$$
 \begin{align*}
 t_u&\stackrel{?}=\langle\mathbf{l}_u,\mathbf{r}_u\rangle\\
 A + Su &\stackrel{?}{=} \langle \mathbf{l}_u, \mathbf{G} \rangle + \langle \mathbf{r}_u, \mathbf{H} \rangle + \pi_{lr} B\\
 t_u &\stackrel{?}{=} V + T_1 u + T_2 u^2 + \pi_t B\\
 \end{align*}
+$$
 
 but this would be linear in size due to the vectors $\mathbf{l}_u$ and $\mathbf{r}_u$. Instead, the prover commits $\mathbf{l}_u$ and $\mathbf{r}_u$ as
 
