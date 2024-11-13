@@ -1,6 +1,6 @@
 # Reducing the number of equality checks (constraints) through random linear combinations
 
-Random linear combination are a common trick in zero knowledge proof algorithms to enable $m$ equality checks to be probabilistically checked with a single equality check. Suppose we have $m$ inner products we are trying to prove. Instead of creating $m$ proofs, we create a random linear combination of the equalities and prove that.
+Random linear combinations are a common trick in zero knowledge proof algorithms to enable $m$ equality checks to be probabilistically checked with a single equality check. Suppose we have $m$ inner products we are trying to prove. Instead of creating $m$ proofs, we create a random linear combination of the equalities and prove that.
 
 ## Equality of Pedersen Commitments
 First, let's consider how we might prove the equality of multiple Pedersen commitments.
@@ -101,7 +101,7 @@ Because the two inner products share a common term, it is algebraically possible
 
 $\langle\mathbf{a}_L, \mathbf{a}_R + \mathbf{a}_W\rangle = v_1 + v_2$
 
-However, this is not secure from a soundness perspective because it is possible because that $\langle \mathbf{a}_L, \mathbf{a}_R\rangle \neq v_1$ and $\langle \mathbf{a}_L, \mathbf{a}_W\rangle\neq v_2$ but $\langle\mathbf{a}_L, \mathbf{a}_R + \mathbf{a}_W\rangle = v_1 + v_2$.
+However, this is not secure from a soundness perspective because it is possible that $\langle \mathbf{a}_L, \mathbf{a}_R\rangle \neq v_1$ and $\langle \mathbf{a}_L, \mathbf{a}_W\rangle\neq v_2$ but $\langle\mathbf{a}_L, \mathbf{a}_R + \mathbf{a}_W\rangle = v_1 + v_2$.
 
 As expected, we can solve this by using a random linear combination.
 
