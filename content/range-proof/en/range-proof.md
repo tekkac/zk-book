@@ -186,7 +186,7 @@ Note that $\mathbf{k}$ is not Hadamard multiplied with $\mathbf{y}^n$, but the l
 
 For now, we compute $t(x)$ as
 
-$$t(x)=v+t_1x+t_2x$$
+$$t(x)=vz+t_1x+t_2x^2$$
 
 where
 
@@ -196,11 +196,11 @@ t_2&=\langle\mathbf{s}_L,\mathbf{s}_R\circ\mathbf{y}
 ^n\rangle
 \end{align*}$$
 
-Note that the constant term in $t(x)$ is $v$ and not $vz$. The commitments are computed as
+Note that the constant term in $t(x)$ is $vz$ and not $v$. The commitments are computed as
 
 $$\begin{align*}
-T_1 &= t_1+\tau_1B\\
-T_2 &= t_2+\tau_2B\\
+T_1 &= t_1G+\tau_1B\\
+T_2 &= t_2G+\tau_2B\\
 \end{align*}$$
 
 and sent to the verifier who then sends the random value $u$.
@@ -217,7 +217,7 @@ t_u&=\langle\mathbf{l}_u,\mathbf{r}_u\rangle\\
 \end{align*}
 $$
 
-Note that the constant term in $\pi_t$ is $vz$. The prover sends $(\mathbf{l}_u,\mathbf{r}_u,t_u,\pi_{lr},\pi_t)$. Finally, the verifier computes:
+Note that the constant term in $\pi_t$ is $\gamma z$. The prover sends $(\mathbf{l}_u,\mathbf{r}_u,t_u,\pi_{lr},\pi_t)$. Finally, the verifier computes:
 
 $$
 \begin{align*}
