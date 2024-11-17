@@ -95,7 +95,7 @@ python3 -m pip install libnum
 After installing [libnum](https://pypi.org/project/libnum/), we can run the following code to demonstrate its use.
 
 ```python
-from libnum import has_sqrtmod_prime_power, has_sqrtmod_prime_power
+from libnum import has_sqrtmod_prime_power, sqrtmod_prime_power
 
 # the functions take arguments# has_sqrtmod_prime_power(n, field_mod, k), where n**k,
 # but we aren't interested in powers in modular fields, so we set k = 1
@@ -108,7 +108,7 @@ print(has_sqrtmod_prime_power(5, 11, 1))
 # True
 
 # compute sqrt(5) mod 11
-print(list(libnum.sqrtmod_prime_power(5, 11, 1)))
+print(list(sqrtmod_prime_power(5, 11, 1)))
 # [4, 7]
 
 assert (4 ** 2) % 11 == 5
