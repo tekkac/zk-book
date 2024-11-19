@@ -15,7 +15,7 @@ $\mathbf{0}^n$ is an $n$ dimensional vector of all zeros.
 
 $\mathbf{1}^n$ is an $n$ dimensional vector of all ones.
 
-$\mathbf{2}^n$ is an $n$ dimensional vector $\mathbf{2}^n$ is $[1,2,4,8,...,2^{n-1}]$
+$\mathbf{2}^n$ is an $n$ dimensional vector $[1,2,4,8,...,2^{n-1}]$
 
 $\mathbf{y}^n$ is an $n$ dimensional vector $[1, y, y^2, y^3, ..., y^{n-1}]$
 
@@ -49,7 +49,7 @@ Now consider a case where $\mathbf{a}_L$ is not binary, for example $[2, 1, 0, 0
 
 More generally, if $\mathbf{a}_L$ has a non-binary entry, that entry will be subtracted by $1$, and the resulting entry in $\mathbf{a}_R$ will be non-zero. When the Hadamard product is computed, then at that particular index, $\mathbf{a}_L$ and $\mathbf{a}_R$ will both be non-zero and the product will be non-zero, meaning $\mathbf{a}_L \circ \mathbf{a}_R \neq \mathbf{0}^n$.
 
-However, if a particular entry in $\mathbf{a}_L$ is $1$, then $\mathbf{a}_R$ will be $0$ at that index and the product of at that index when the Hadamard product is computed will be zero.
+However, if a particular entry in $\mathbf{a}_L$ is $1$, then $\mathbf{a}_R$ will be $0$ at that index so that the Hadamard product at that index will be zero, too.
 
 Finally, if a particular entry in $\mathbf{a}_L$ is $0$, then $\mathbf{a}_R$ will be $-1$ at that index and their element-wise product will still be zero at that index.
 
@@ -186,7 +186,7 @@ Note that $\mathbf{k}$ is not Hadamard multiplied with $\mathbf{y}^n$, but the l
 
 For now, we compute $t(x)$ as
 
-$$t(x)=v+t_1x+t_2x$$
+$$t(x)=vz+t_1x+t_2x^2$$
 
 where
 
@@ -196,11 +196,11 @@ t_2&=\langle\mathbf{s}_L,\mathbf{s}_R\circ\mathbf{y}
 ^n\rangle
 \end{align*}$$
 
-Note that the constant term in $t(x)$ is $v$ and not $vz$. The commitments are computed as
+Note that the constant term in $t(x)$ is $vz$ and not $v$. The commitments are computed as
 
 $$\begin{align*}
-T_1 &= t_1+\tau_1B\\
-T_2 &= t_2+\tau_2B\\
+T_1 &= t_1G+\tau_1B\\
+T_2 &= t_2G+\tau_2B\\
 \end{align*}$$
 
 and sent to the verifier who then sends the random value $u$.
@@ -217,7 +217,7 @@ t_u&=\langle\mathbf{l}_u,\mathbf{r}_u\rangle\\
 \end{align*}
 $$
 
-Note that the constant term in $\pi_t$ is $vz$. The prover sends $(\mathbf{l}_u,\mathbf{r}_u,t_u,\pi_{lr},\pi_t)$. Finally, the verifier computes:
+Note that the constant term in $\pi_t$ is $\gamma z$. The prover sends $(\mathbf{l}_u,\mathbf{r}_u,t_u,\pi_{lr},\pi_t)$. Finally, the verifier computes:
 
 $$
 \begin{align*}
@@ -263,7 +263,7 @@ Therefore, the prover has three inner products to establish:
 3. $\langle\mathbf{a}_L -\mathbf{1}^n- \mathbf{a}_R,\mathbf{y}^n\rangle=\mathbf{0}^n$
 
 ### Combining three inner products into one
-The three inner products can combined into a single one using a random linear combination with randomness $z$ provided from the verifier.
+The three inner products can be combined into a single one using a random linear combination with randomness $z$ provided from the verifier.
 
 $$z^2 \cdot \langle \mathbf{a_L}, 2^n \rangle + z^1 \cdot \langle \mathbf{a_L} - \mathbf{1}^n - \mathbf{a_R}, \mathbf{y}^n \rangle + z^0\langle \mathbf{a_L}, \mathbf{a_R} \circ \mathbf{y}^n \rangle = z^2 \cdot v + z^1\cdot\mathbf{0}^n+z^0\cdot\mathbf{0}^n$$
 
@@ -367,7 +367,7 @@ $t_uG+\pi_tB=V\boxed{z^2}+\boxed{\delta(y,z)}\cdot G+T_1u+T_2u^2$
 
 Recall that the prover did not commit the entire vectors they used for the left and right side of the inner product, but only $\mathbf{a}_L$ and $\mathbf{b}_L$. The rest of the vectors were additive public vectors known to the verifier, so the verifier reconstructed the commitments to the vectors by constructing commitments to the constant terms and adding them to the commitment of the secret vectors supplied by the prover.
 
-By way of reminder, here is the original inner product with the values known the the verifier boxed:
+By way of reminder, here is the original inner product with the values known to the verifier boxed:
 
 $$\left\langle \mathbf{a_L} + \boxed{-z \cdot \mathbf{1}^n}, \mathbf{y}^n \circ \mathbf{a_R} +  \boxed{\mathbf{y}^n\cdot z + z^2 \cdot 2^n }\right\rangle = \boxed{z^2} \cdot v + \boxed{\delta(y,z)}
 $$
@@ -397,13 +397,13 @@ we make the following substitution:
 
 $\underbrace{\langle\mathbf{a}_L,\mathbf{G}\rangle+\langle\mathbf{a}_R,\mathbf{H}\rangle+\alpha B}_A + \underbrace{(\langle\mathbf{s}_L,\mathbf{G}\rangle+\langle\mathbf{s}_R,\mathbf{H}\rangle+\beta B)}_Su + \langle -z\cdot\mathbf{1}^n,\mathbf{G}\rangle + \langle z\cdot\mathbf{y}^n+z^2\cdot\mathbf{2}^n,\mathbf{H}_{\mathbf{y}^{-1}}\rangle\stackrel{?}{=} \langle \underbrace{\mathbf{a}_L-z\cdot\mathbf{1}+\mathbf{s}_Lu}_{\mathbf{l}_u}, \mathbf{G} \rangle + \langle \underbrace{\mathbf{y}^n\circ(\mathbf{a}_R+z\cdot\mathbf{1})+z^2\mathbf{2}^n+\mathbf{y}^n\circ\mathbf{s}_Rx}_{\mathbf{r}_u}, \mathbf{H}_{y^{-1}} \rangle + \underbrace{(\alpha+\beta u)}_{\pi_{lr}} B$
 
-all the $\mathbf{G}$ terms cancel as follows:
+All the $\mathbf{G}$ terms cancel as follows:
 
 $\cancel{\langle\mathbf{a}_L,\mathbf{G}\rangle}+\langle\mathbf{a}_R,\mathbf{H}\rangle+\alpha B + (\cancel{\langle\mathbf{s}_L,\mathbf{G}\rangle}+\langle\mathbf{s}_R,\mathbf{H}\rangle+\beta B)u + \cancel{\langle -z\cdot\mathbf{1}^n,\mathbf{G}\rangle} + \langle z\cdot\mathbf{y}^n+z^2\cdot\mathbf{2}^n,\mathbf{H}_{\mathbf{y}^{-1}}\rangle \stackrel{?}{=} \cancel{\langle \mathbf{a}_L-z\cdot\mathbf{1}+\mathbf{s}_L u, \mathbf{G} \rangle} + \langle \mathbf{y}^n\circ(\mathbf{a}_R+z\cdot\mathbf{1})+z^2\mathbf{2}^n+\mathbf{y}^n\circ\mathbf{s}_R x, \mathbf{H}_{y^{-1}} \rangle + (\alpha+\beta u) B$
 
 $\langle\mathbf{a}_R,\mathbf{H}\rangle+\alpha B + (\langle\mathbf{s}_R,\mathbf{H}\rangle+\beta B)u  + \langle z\cdot\mathbf{y}^n+z^2\cdot\mathbf{2}^n,\mathbf{H}_{\mathbf{y}^{-1}}\rangle \stackrel{?}{=} \langle \mathbf{y}^n\circ(\mathbf{a}_R+z\cdot\mathbf{1})+z^2\mathbf{2}^n+\mathbf{y}^n\circ\mathbf{s}_R x, \mathbf{H}_{y^{-1}} \rangle + (\alpha+\beta u) B$
 
-the blinding terms related to $B$ cancel as follows:
+The blinding terms related to $B$ cancel as follows:
 
 $\langle\mathbf{a}_R,\mathbf{H}\rangle+\cancel{\alpha B} + (\langle\mathbf{s}_R,\mathbf{H}\rangle+\cancel{\beta B)u}  + \langle z\cdot\mathbf{y}^n+z^2\cdot\mathbf{2}^n,\mathbf{H}_{\mathbf{y}^{-1}}\rangle \stackrel{?}{=} \langle \mathbf{y}^n\circ(\mathbf{a}_R+z\cdot\mathbf{1})+z^2\mathbf{2}^n+\mathbf{y}^n\circ\mathbf{s}_R x, \mathbf{H}_{y^{-1}} \rangle + \cancel{(\alpha+\beta u) B}$
 
@@ -417,7 +417,7 @@ Split the inner products:
 
 $\langle\mathbf{a}_R,\mathbf{H}\rangle + (\langle\mathbf{s}_R,\mathbf{H}\rangle u)  + \langle z\cdot\mathbf{y}^n,\mathbf{H}_{\mathbf{y}^{-1}}\rangle+\langle z^2\cdot\mathbf{2}^n,\mathbf{H}_{\mathbf{y}^{-1}}\rangle \stackrel{?}{=} \langle \mathbf{a}_R,\mathbf{H}\rangle+\langle z\cdot\mathbf{1},\mathbf{H}\rangle+\langle z^2\mathbf{2}^n,\mathbf{H}_{\mathbf{y}^{-1}}\rangle+\langle\mathbf{s}_R u, \mathbf{H} \rangle$
 
-cancel like terms:
+Cancel terms that appear on both sides of the equation:
 
 $$\cancel{\langle\mathbf{a}_R,\mathbf{H}\rangle} + (\langle\mathbf{s}_R,\mathbf{H}\rangle u)  + \langle z\cdot\mathbf{y}^n,\mathbf{H}_{\mathbf{y}^{-1}}\rangle+\langle z^2\cdot\mathbf{2}^n,\mathbf{H}_{\mathbf{y}^{-1}}\rangle \stackrel{?}{=} \cancel{\langle \mathbf{a}_R,\mathbf{H}\rangle}+\langle z\cdot\mathbf{1},\mathbf{H}\rangle+\langle z^2\mathbf{2}^n,\mathbf{H}_{\mathbf{y}^{-1}}\rangle+\langle\mathbf{s}_R u, \mathbf{H} \rangle$$
 
@@ -427,7 +427,7 @@ $$\langle z\cdot\mathbf{y}^n,\mathbf{H}_{\mathbf{y}^{-1}}\rangle+\cancel{\langle
 
 $$\langle z\cdot\mathbf{y}^n,\mathbf{H}_{\mathbf{y}^{-1}}\rangle \stackrel{?}{=}\langle z\cdot\mathbf{1},\mathbf{H}\rangle$$
 
-move $\mathbf{y}^n$ to the other side:
+Move $\mathbf{y}^n$ to the other side:
 
 $$\langle z\cdot\mathbf{1},\mathbf{H}\rangle \stackrel{?}{=}\langle z\cdot\mathbf{1},\mathbf{H}\rangle$$
 
@@ -478,11 +478,11 @@ Therefore, Bulletproofs are capable of proving knowledge of any witness for any 
 
 ## Appendix: Derivation of combining three inner products into one
 
-Starting with the three inner products:
+Starting with the three inner products
 
 $$z^2 \cdot \langle \mathbf{a_L}, \mathbf{2}^n \rangle + z \cdot \langle \mathbf{a_L} - \mathbf{1}^n - \mathbf{a_R}, \mathbf{y}^n \rangle + \langle \mathbf{a_L}, \mathbf{a_R} \circ \mathbf{y}^n \rangle = z^2 \cdot v$$
 
-We show how to derive the final result:
+we show how to derive the final result
 
 $$\langle \mathbf{a_L}-z\cdot\mathbf{1}^n, \mathbf{a}_R\circ\mathbf{y}^n+z\cdot\mathbf{y}^n+z^2\cdot\mathbf{2}^n \rangle= z^2 \cdot v+(z-z^2)\cdot\langle\mathbf{1}^n,\mathbf{y}^n\rangle-z^3\langle\cdot\mathbf{1}^n,\mathbf{2}^n\rangle$$
 
@@ -494,15 +494,15 @@ $$z^2 \cdot \langle \mathbf{a_L}, \mathbf{2}^n \rangle + \boxed{z \cdot \langle 
 
 $$z^2 \cdot \langle \mathbf{a_L}, \mathbf{2}^n \rangle+\boxed{z\cdot\langle\mathbf{a}_L,\mathbf{y}^n\rangle+z\cdot\langle-\mathbf{1}^n,\mathbf{y}^n\rangle+z\cdot\langle-\mathbf{a}_R,\mathbf{y}^n\rangle}+\langle \mathbf{a_L}, \mathbf{a_R} \circ \mathbf{y}^n \rangle=z^2\cdot v$$
 
-2. We can move the constant $z$ terms inside the inner products
+2. We can move the constant $z$ terms inside the inner products:
 $$\langle \mathbf{a_L}, z^2\cdot\mathbf{2}^n \rangle+\langle\mathbf{a}_L,z\cdot\mathbf{y}^n\rangle+\langle-z\cdot\mathbf{1}^n,\mathbf{y}^n\rangle+\langle-\mathbf{a}_R,z\cdot\mathbf{y}^n\rangle+\langle \mathbf{a_L}, \mathbf{a_R} \circ \mathbf{y}^n \rangle= z^2 \cdot v$$
 
-3. Move the values known to the verifier to the right
+3. Move the values known to the verifier to the right:
 $$\langle \mathbf{a_L}, z^2\cdot\mathbf{2}^n \rangle+\langle\mathbf{a}_L,z\cdot\mathbf{y}^n\rangle+\boxed{\langle-z\cdot\mathbf{1}^n,\mathbf{y}^n\rangle}+\langle-\mathbf{a}_R,z\cdot\mathbf{y}^n\rangle+\langle \mathbf{a_L}, \mathbf{a_R} \circ \mathbf{y}^n \rangle= z^2 \cdot v$$
 
 $$\langle \mathbf{a_L}, z^2\cdot\mathbf{2}^n \rangle+\langle\mathbf{a}_L,z\cdot\mathbf{y}^n\rangle+\langle-\mathbf{a}_R,z\cdot\mathbf{y}^n\rangle+\langle \mathbf{a_L}, \mathbf{a_R} \circ \mathbf{y}^n \rangle= z^2 \cdot v-\boxed{\langle-z\cdot\mathbf{1}^n,\mathbf{y}^n\rangle}$$
 
-4. Convert the $\mathbf{a}_R$ terms to both be $\mathbf{a}_R\circ\mathbf{y}^n$.
+4. Convert the $\mathbf{a}_R$ terms to both be $\mathbf{a}_R\circ\mathbf{y}^n$:
 
 $$\langle \mathbf{a_L}, z^2\cdot\mathbf{2}^n \rangle+\langle\mathbf{a}_L,z\cdot\mathbf{y}^n\rangle+\boxed{\langle-\mathbf{a}_R\circ\mathbf{y}^n,z\cdot\mathbf{1}^n\rangle}+\langle \mathbf{a_L}, \mathbf{a_R} \circ \mathbf{y}^n \rangle= z^2 \cdot v-\langle-z\cdot\mathbf{1}^n,\mathbf{y}^n\rangle$$
 
@@ -518,24 +518,24 @@ $$\langle \mathbf{a_L}, z^2\cdot\mathbf{2}^n \rangle+\langle\mathbf{a}_L,z\cdot\
 
 $$\langle \mathbf{a_L}, z^2\cdot\mathbf{2}^n \rangle+\langle\mathbf{a}_L,z\cdot\mathbf{y}^n\rangle+\langle\mathbf{a}_R\circ\mathbf{y}^n,\mathbf{a}_L-z\cdot\mathbf{1}^n\rangle= z^2 \cdot v-\langle-z\cdot\mathbf{1}^n,\mathbf{y}^n\rangle$$
 
-6. Combine the two $\mathbf{a}_L$ terms on the left
+6. Combine the two $\mathbf{a}_L$ terms on the left:
 
 $$\langle \boxed{\mathbf{a_L}}, z^2\cdot\mathbf{2}^n \rangle+\langle\boxed{\mathbf{a}_L},z\cdot\mathbf{y}^n\rangle+\langle\mathbf{a}_R\circ\mathbf{y}^n,\mathbf{a}_L-z\cdot\mathbf{1}^n\rangle= z^2 \cdot v-\langle-z\cdot\mathbf{1}^n,\mathbf{y}^n\rangle$$
 
 $$\langle \mathbf{a_L}, z\cdot\mathbf{y}^n+z^2\cdot\mathbf{2}^n \rangle+\langle\mathbf{a}_R\circ\mathbf{y}^n,\mathbf{a}_L-z\cdot\mathbf{1}^n\rangle= z^2 \cdot v-\langle-z\cdot\mathbf{1}^n,\mathbf{y}^n\rangle$$
 
-7. Split the last left hand side term into two inner products
+7. Split the last left-hand side term into two inner products:
 $$\langle \mathbf{a_L}, z\cdot\mathbf{y}^n+z^2\cdot\mathbf{2}^n \rangle+\boxed{\langle\mathbf{a}_R\circ\mathbf{y}^n,\mathbf{a}_L-z\cdot\mathbf{1}^n\rangle}= z^2 \cdot v-\langle-z\cdot\mathbf{1}^n,\mathbf{y}^n\rangle$$
 
 $$\langle \mathbf{a_L}, z\cdot\mathbf{y}^n+z^2\cdot\mathbf{2}^n \rangle+\langle\mathbf{a}_R\circ\mathbf{y}^n,\mathbf{a}_L\rangle+\langle\mathbf{a}_R\circ\mathbf{y}^n,-z\cdot\mathbf{1}^n\rangle= z^2 \cdot v-\langle-z\cdot\mathbf{1}^n,\mathbf{y}^n\rangle$$
 
-8. Combine the $\mathbf{a}_L$ terms
+8. Combine the $\mathbf{a}_L$ terms:
 $$\langle \boxed{\mathbf{a_L}}, z\cdot\mathbf{y}^n+z^2\cdot\mathbf{2}^n \rangle+\langle\mathbf{a}_R\circ\mathbf{y}^n,
 \boxed{\mathbf{a}_L}\rangle+\langle\mathbf{a}_R\circ\mathbf{y}^n,-z\cdot\mathbf{1}^n\rangle= z^2 \cdot v-\langle-z\cdot\mathbf{1}^n,\mathbf{y}^n\rangle$$
 
 $$\langle \mathbf{a_L}, \mathbf{a}_R\circ\mathbf{y}^n+z\cdot\mathbf{y}^n+z^2\cdot\mathbf{2}^n \rangle+\langle\mathbf{a}_R\circ\mathbf{y}^n,-z\cdot\mathbf{1}^n\rangle= z^2 \cdot v-\langle-z\cdot\mathbf{1}^n,\mathbf{y}^n\rangle$$
 
-9. We can use the rule $\langle \mathbf{x}, \mathbf{b} + \mathbf{c}\rangle + \langle \mathbf{b}, \mathbf{y}\rangle = v \rightarrow \langle \mathbf{x} + \mathbf{y}, \mathbf{b} + \mathbf{c}\rangle = v + \langle\mathbf{y},\mathbf{c}\rangle$ to combine the terms that contain $\mathbf{a}_R\circ\mathbf{y}^n$. Here $\mathbf{b}$ is $\mathbf{a}_R\circ\mathbf{y}^n$, $\mathbf{c}$ is $z\cdot\mathbf{y}^n+z^2\cdot\mathbf{2}^n$, and $\mathbf{y}$ is $-z\cdot\mathbf{1}^n$
+9. We can use the rule $\langle \mathbf{x}, \mathbf{b} + \mathbf{c}\rangle + \langle \mathbf{b}, \mathbf{y}\rangle = v \rightarrow \langle \mathbf{x} + \mathbf{y}, \mathbf{b} + \mathbf{c}\rangle = v + \langle\mathbf{y},\mathbf{c}\rangle$ to combine the terms that contain $\mathbf{a}_R\circ\mathbf{y}^n$. Here $\mathbf{b}$ is $\mathbf{a}_R\circ\mathbf{y}^n$, $\mathbf{c}$ is $z\cdot\mathbf{y}^n+z^2\cdot\mathbf{2}^n$, and $\mathbf{y}$ is $-z\cdot\mathbf{1}^n$.
 
 $$\langle \underbrace{\mathbf{a_L}}_\mathbf{x}, \underbrace{\mathbf{a}_R\circ\mathbf{y}^n}_\mathbf{b}+\underbrace{z\cdot\mathbf{y}^n+z^2\cdot\mathbf{2}^n}_\mathbf{c} \rangle+\langle\underbrace{\mathbf{a}_R\circ\mathbf{y}^n}_\mathbf{b},\underbrace{-z\cdot\mathbf{1}^n}_\mathbf{y}\rangle= \underbrace{z^2 \cdot v-\langle-z\cdot\mathbf{1}^n,\mathbf{y}^n\rangle}_v$$
 
@@ -543,19 +543,19 @@ $$\langle \underbrace{\mathbf{a_L}}_\mathbf{x}-\underbrace{z\cdot\mathbf{1}^n}_\
 
 $$\langle \mathbf{a_L}-z\cdot\mathbf{1}^n, \mathbf{a}_R\circ\mathbf{y}^n+z\cdot\mathbf{y}^n+z^2\cdot\mathbf{2}^n \rangle= z^2 \cdot v-\langle-z\cdot\mathbf{1}^n,\mathbf{y}^n\rangle+\langle-z\cdot\mathbf{1}^n,z\cdot\mathbf{y}^n+z^2\cdot\mathbf{2}^n\rangle$$
 
-10. We now break up the terms on the right hand side
+10. We now break up the terms on the right-hand side:
 
 $$\langle \mathbf{a_L}-z\cdot\mathbf{1}^n, \mathbf{a}_R\circ\mathbf{y}^n+z\cdot\mathbf{y}^n+z^2\cdot\mathbf{2}^n \rangle= z^2 \cdot v-\langle-z\cdot\mathbf{1}^n,\mathbf{y}^n\rangle+\langle-z\cdot\mathbf{1}^n,z\cdot\mathbf{y}^n\rangle+\langle-z\cdot\mathbf{1}^n,z^2\cdot\mathbf{2}^n\rangle$$
 
-11. Take the scalars out of the inner products on the right
+11. Take the scalars out of the inner products on the right:
 
 $$\langle \mathbf{a_L}-z\cdot\mathbf{1}^n, \mathbf{a}_R\circ\mathbf{y}^n+z\cdot\mathbf{y}^n+z^2\cdot\mathbf{2}^n \rangle= z^2 \cdot v+z\cdot\langle\mathbf{1}^n,\mathbf{y}^n\rangle-z^2\cdot\langle\mathbf{1}^n,\mathbf{y}^n\rangle-z^3\langle\cdot\mathbf{1}^n,\mathbf{2}^n\rangle$$
 
-12. Factor out $\langle\mathbf{1}^n,\mathbf{y}^n\rangle$
+12. Factor out $\langle\mathbf{1}^n,\mathbf{y}^n\rangle$:
 
 $$\langle \mathbf{a_L}-z\cdot\mathbf{1}^n, \mathbf{a}_R\circ\mathbf{y}^n+z\cdot\mathbf{y}^n+z^2\cdot\mathbf{2}^n \rangle= z^2 \cdot v+(z-z^2)\cdot\langle\mathbf{1}^n,\mathbf{y}^n\rangle-z^3\langle\cdot\mathbf{1}^n,\mathbf{2}^n\rangle$$
 
-since $\delta(y,z)=(z-z^2)\cdot\langle\mathbf{1}^n,\mathbf{y}^n\rangle-z^3\langle\cdot\mathbf{1}^n,\mathbf{2}^n\rangle$ we have 
+Since $\delta(y,z)=(z-z^2)\cdot\langle\mathbf{1}^n,\mathbf{y}^n\rangle-z^3\langle\cdot\mathbf{1}^n,\mathbf{2}^n\rangle$, we have:
 
 $$\langle \mathbf{a_L}-z\cdot\mathbf{1}^n, \mathbf{a}_R\circ\mathbf{y}^n+z\cdot\mathbf{y}^n+z^2\cdot\mathbf{2}^n \rangle= z^2 \cdot v+\delta(y,z)$$
 

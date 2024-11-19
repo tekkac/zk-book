@@ -15,7 +15,7 @@ Now consider that if we have one point, we can draw a line through that point wi
 The pattern that we can "draw a polynomial through" $n$ points with a (at most) degree $n - 1$ polynomial holds for any number of points. For example, the points $(0, 0), (1, 1), (2, 4)$ can be interpolated with $y = x^2$. If those points happened to be a straight line, e.g. $(0, 0), (1, 1), (2, 2)$, then we could draw a line through $(1, 1)$ and $(2, 2)$ with a degree 1 polynomial $y = x$, but in general, three points won't be collinear, so we'll need a degree 2 polynomial to cross all the points.
 
 ## Python code for Lagrange interpolation
-For our purposes isn't important to understand how to compute this polynomial, as there are math libraries that will do it for us. The most common algorithm is *Lagrange interpolation* and we show how to do that in Python.
+For our purposes it isn't important to understand how to compute this polynomial, as there are math libraries that will do it for us. The most common algorithm is *Lagrange interpolation* and we show how to do that in Python.
 
 #### Float example
 We can compute a polynomial $p(x)$ that crosses through the points $(1,4), (2,8), (3,2), (4,1)$ using Lagrange interpolation.

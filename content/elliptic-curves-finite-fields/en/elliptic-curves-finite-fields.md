@@ -87,11 +87,6 @@ Square roots often have two solutions, a positive and a negative one. Although w
 
 You can find code online to implement the algorithm described above, but to avoid putting large chunks of code in this tutorial, we will install a Python library instead.
 
-For example, the square root of 5 modulo 11 is 4 (4 × 4 mod 11 = 5), but there is no square root of 6 modulo 11. (The reader is encouraged to discover this is true via brute force).
-
-Square roots have two solutions, a positive and a negative one. Although we don’t have numbers with a negative sign in a finite field, we still have a notion of “negative numbers” in the sense of having an inverse.
-
-You can find code online to implement the algorithm described above, but to avoid putting large chunks of code in this tutorial, we will install a Python library instead.
 
 ```bash
 python3 -m pip install libnum
@@ -100,7 +95,7 @@ python3 -m pip install libnum
 After installing [libnum](https://pypi.org/project/libnum/), we can run the following code to demonstrate its use.
 
 ```python
-from libnum import has_sqrtmod_prime_power, has_sqrtmod_prime_power
+from libnum import has_sqrtmod_prime_power, sqrtmod_prime_power
 
 # the functions take arguments# has_sqrtmod_prime_power(n, field_mod, k), where n**k,
 # but we aren't interested in powers in modular fields, so we set k = 1
@@ -113,7 +108,7 @@ print(has_sqrtmod_prime_power(5, 11, 1))
 # True
 
 # compute sqrt(5) mod 11
-print(list(libnum.sqrtmod_prime_power(5, 11, 1)))
+print(list(sqrtmod_prime_power(5, 11, 1)))
 # [4, 7]
 
 assert (4 ** 2) % 11 == 5

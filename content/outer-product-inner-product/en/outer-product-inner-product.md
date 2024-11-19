@@ -64,7 +64,7 @@ b_1&a_1b_1 + a_1b_2\\
 \hline
 b_1&a_1b_1&a_2b_1\\
 \hline
-b_2&a_1b_2&a_2b_1\\
+b_2&a_1b_2&a_2b_2\\
 \hline
 \end{array}
 $$
@@ -75,7 +75,7 @@ $$
 (a_1 + a_2)(G_1 + G_2) = a_1G_1 + a_1G_2 + a_2G_1 + a_2G_2
 $$
 
-Note that our original Pedersen commitment:
+Note that our original Pedersen commitment
 
 $$
 A = \langle[a_1,a_2],[G_1,G_2]\rangle = a_1G_1 + a_2G_2
@@ -87,9 +87,9 @@ $$
 (a_1 + a_2)(G_1 + G_2) = \boxed{a_1G_1} + a_1G_2 + a_2G_1 + \boxed{a_2G_2}
 $$
 
-**Therefore, by multiplying the sum of the vectors together, we also compute the sum of outer product.**
+**Therefore, by multiplying the sums of the vector entries together, we also compute the sum of outer product.**
 
-Since the inner product is the diagonal of the outer product, we have *indirectly* computed the inner product by multiplying the sum of the vectors together. To prove that we know the inner product, we need to prove we also know the terms of the outer product that are not part of the inner product.
+Since the inner product is the diagonal of the outer product, we have *indirectly* computed the inner product by multiplying the sums of the vector entries together. To prove that we know the inner product, we need to prove we also know the terms of the outer product that are not part of the inner product.
 
 For vectors of length $2$, let's call the parts of the outer product that are not part of the inner product the *off-diagonal product*.
 
@@ -116,7 +116,7 @@ For cases where $n > 2$, proving knowledge of an inner product means the prover 
 
 ![a square matrix with every entry shaded except the main diagonal](https://pub-32882f615aa84e4a94e1279ccf3ab85a.r2.dev/bulletproofs-06/off-product-shade.png)
 
-Conveying this information succinctly when $n > 2$ is tricker, so we will revisit this later.
+Conveying this information succinctly when $n > 2$ is trickier, so we will revisit this later.
 
 In the case of $n = 2$, the area is simply the off-diagonals.
 
@@ -129,7 +129,7 @@ We can now create a first draft of an algorithm for the case $n=2$ that proves w
 The interaction between the prover and the verifier is as follows:
 
 1. The prover sends their commitment $A = a_1G_1 + a_2G_2$ to the verifier.
-2. The prover adds up all the terms in $\mathbf{a}$ and sends that as $a' = a_1 + a_2$ to the verifier (note that the sum of the components of a vector is a scalar, hence the summing the elements of $\mathbf{a}$ results in scalar $a'$). Furthermore, the prover computes the off-diagonal terms of $\mathbf{a} \otimes \mathbf{G}$ (i.e. $R = a_2G_1$, $L = a_1G_2$) and sends $L$ and $R$ to the verifier.
+2. The prover adds up all the terms in $\mathbf{a}$ and sends that as $a' = a_1 + a_2$ to the verifier (note that the sum of the components of a vector is a scalar, hence summing the elements of $\mathbf{a}$ results in scalar $a'$). Furthermore, the prover computes the off-diagonal terms of $\mathbf{a} \otimes \mathbf{G}$ (i.e. $R = a_2G_1$, $L = a_1G_2$) and sends $L$ and $R$ to the verifier.
 
 Graphically, $L$ and $R$ can be seen as follows:
 
@@ -221,9 +221,9 @@ Since they have both compressed the original vector to a vector of length $1$, t
 As a quick summary of the algorithm,
 
 1. The prover sends the $(A, L, R)$ to the verifier.
-2. The verifier responds with $u$
-3. The prover computes and sends $a'$
-3. The verifier checks that
+2. The verifier responds with $u$.
+3. The prover computes and sends $a'$.
+4. The verifier checks that:
 
 $$L + uA + u^2R \stackrel{?}= a'(uG_1 + G_2)$$
 
@@ -290,9 +290,7 @@ R &= a_2G_1 \\
 $$
 2. The verifier responds with a random scalar $u$.
 3. The prover computes and sends $a'$
-
 $$a' = \mathsf{fold}(\mathbf{a},u) = a_1u + a_2u^{-1}$$
-
 4. The verifier computes:
 $$
 \begin{align*}
@@ -346,8 +344,8 @@ R_4 &= a_8G_7\\
 \end{align*}$$
 
 Graphically, that can be seen as follows:
-$$\begin{array}{c|c|}
-&a_1 & a_2 & a_3 & a_4 & a_6 & a_6 & a_7 & a_8\\
+\begin{array}{c|c|}
+&a_1 & a_2 & a_3 & a_4 & a_5 & a_6 & a_7 & a_8\\
 \hline
 G_1&&R_1\\
 \hline
@@ -384,7 +382,7 @@ The operation described is shown in the animation below:
 ### Security of adding all the commitments and off-diagonals together
 An initial concern with such an optimization is that since the prover is adding more terms together, there is more opportunity to hide a dishonest computation.
 
-We now show that once the prover sends $A$ (and $L$ and $R$) they can only create a one unique proof that they know the opening to $A$.
+We now show that once the prover sends $A$ (and $L$ and $R$) they can only create one unique proof that they know the opening to $A$.
 
 Observe that $L$ is computed as $L = a_1G_2 + a_3G_4 +a_5G_6+a_7G_8$ and $R$ is computed as $R = a_2G_1 + a_4G_3 +a_6G_5+a_8G_7$. They do not have any common elliptic curve points. Thus, the prover cannot "shift value" from $L$ to $R$ because they do not know the discrete logs of any of the points. Effectively, $L$ is a Pedersen vector commitment of $[a_2, a_4, a_6, a_8]$ to the basis vector $[G_1, G_3, G_5, G_7]$. The security assumption of a Pedersen vector commitment is that the prover can only produce one possible vector opening. "Shifting values around" after they send the commitment would mean the prover can compute a different vector other than $[a_2, a_4, a_6, a_8]$ which produces the same commitment. But that contradicts our assumption that a prover can only produce a single valid vector for a Pedersen commitment. A similar argument can be made for $R$.
 
@@ -396,7 +394,7 @@ $$\begin{align*}
 
 For example, the prover might "shift value" from $a_1G_1$ to $a_2G_1$.
 
-The only remaining concern is that the prover could shift value from $a_1G_1$ in $A$ to $a_2G_1$ in $L$ since they share a common elliptic curve point. However, this is prevented by the randomness $u$ from the verifier as shown previously.
+The only remaining concern is that the prover could shift value from $a_1G_1$ in $A$ to $a_2G_1$ in $L$ since they share a common elliptic curve point. However, this is prevented by the random $u$ from the verifier as shown previously.
 
 Hence, once the prover sends $(A, L, R)$ computed in the manner described in this section, they can only create one possible opening, and thus create only one possible proof.
 
@@ -407,7 +405,7 @@ Hence, once the prover sends $(A, L, R)$ computed in the manner described in thi
 3. The prover computes $\mathbf{a}'=\mathsf{fold}(\mathbf{a},u)$ and sends $\mathbf{a}'$ to the verifier.
 4. The verifier checks that $Lu^2 + A + Ru^{-2} \stackrel{?}=\langle\mathbf{a}',\mathsf{fold}(\mathbf{G},u^{-1})\rangle$.
 
-We leave it as an exercise for the reader to work an example to check that the final verification check is algebraically identical if the prover was honest. We suggest using a small example for $n=4$.
+We leave it as an exercise for the reader to work out an example to check that the final verification check is algebraically identical if the prover was honest. We suggest using a small example such as $n=4$.
 
 ## Yet another interpretation of $\mathsf{fold}$
 $P$ is a commitment to the original vector $\mathbf{a}$ with respect to the basis vector $\mathbf{G}$. $L$ is a commitment to the vector made up of the left off-diagonals of the pairwise outer products and $R$ is a commitment to the components of the right off-diagonals of the pairwise outer products.
@@ -429,7 +427,7 @@ Using this interpretation, the algorithm is doing the following:
 Because the verifier needs to compute $\mathsf{fold}(\mathbf{G}, u^{-1})$, this will require iterating over the entire $\mathbf{G}$ vector, which will take $\mathcal{O}(n)$ time. Although the proof size can be smaller than the original vectors, verifing the proof will still take linear time.
 
 ## Summary
-We have shown how the prover can show they know an opening to Pedersen vector commitment $A$ while sending only $n/2$ elements ($\mathbf{a}$ folded).
+We have shown how the prover can show they know an opening to a Pedersen vector commitment $A$ while sending only $n/2$ elements ($\mathbf{a}$ folded).
 
 In the next chapter, we show how to recursively apply this algorithm so that the prover only sends $\mathcal{O}(\log n)$ elements.
 

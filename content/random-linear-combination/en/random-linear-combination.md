@@ -1,6 +1,6 @@
 # Reducing the number of equality checks (constraints) through random linear combinations
 
-Random linear combination are a common trick in zero knowledge proof algorithms to enable $m$ equality checks to be probabilistically checked with a single equality check. Suppose we have $m$ inner products we are trying to prove. Instead of creating $m$ proofs, we create a random linear combination of the equalities and prove that.
+Random linear combinations are a common trick in zero knowledge proof algorithms to enable $m$ equality checks to be probabilistically checked with a single equality check. Suppose we have $m$ inner products we are trying to prove. Instead of creating $m$ proofs, we create a random linear combination of the equalities and prove that.
 
 ## Equality of Pedersen Commitments
 First, let's consider how we might prove the equality of multiple Pedersen commitments.
@@ -53,10 +53,10 @@ The prover and verifier agree on elliptic curve points $G$ and $B$, where the di
 #### Prover sends commitments
 The prover generates blinding terms $\alpha_1, \alpha_2, \beta_1, \beta_2$ and creates the Pedersen commitments
 
-$L_1 = aG + \alpha_1 B$
-$R_1 = aG + \beta_1 B$
-$L_2 = bG + \alpha_2 B$
-$R_2 = bG + \beta_2 B$
+$L_1 = l_{1}G + \alpha_1 B$ \
+$R_1 = r_{1}G + \beta_1 B$ \
+$L_2 = l_{2}G + \alpha_2 B$ \
+$R_2 = r_{2}G + \beta_2 B$
 
 and sends $(L_1, L_2, R_1, R_2)$ to the verifier.
 
@@ -64,7 +64,7 @@ and sends $(L_1, L_2, R_1, R_2)$ to the verifier.
 The verifier chooses a random field element $z$ and sends it to the prover.
 
 #### Prover computes the difference in blinding terms
-The prover computes $\pi = \alpha_1+\beta_1\cdot z-\alpha_2-\beta_2\cdot z$ and sends $\pi$ to the verifier.
+The prover computes $\pi = \alpha_1+\alpha_2\cdot z-\beta_1-\beta_2\cdot z$ and sends $\pi$ to the verifier.
 
 #### Final verification check
 The verifier checks that
@@ -78,16 +78,16 @@ Now suppose $l_1\neq r_1$ or $l_2 \neq r_2$. The prover still will not be able t
 
 ## Generalizing to $m$ checks
 
-If we have $m$ equality checks, $L_1 = L_1, L_2 = R_2, ..., R_m = R_m$, the verifier could send $m$ random elements $z_1,\dots,z_m$ and the prover could provide $\pi$ such that
+If we have $m$ equality checks, $L_1 = R_1, L_2 = R_2, ..., L_m = R_m$, the verifier could send $m$ random elements $z_1,\dots,z_m$ and the prover could provide $\pi$ such that
 
-$L_1 + L_2z_1 + L_3z_2 + ... L_mz_{m-1} \stackrel{?}{=}R_1 + R_1z_1+R_2z_2+\dots+R_mz_{m-1} + \pi B$
+$L_1 + L_2z_1 + L_3z_2 + ... L_mz_{m-1} \stackrel{?}{=}R_1 + R_2z_1+R_3z_2+\dots+R_mz_{m-1} + \pi B$
 
 However, this requires the verifier to send $m$ elements, leading to a linear communication overhead. The communication overhead can be reduced to constant if the verifier only sends $z$ and the prover and verifier separate the commitments by successive powers of $z$:
 
-$L_1 + L_2z_1 + L_3z^2 + ... L_mz^{m-1} \stackrel{?}{=}R_1+R_2z+R_3z^2\dots+R_mz^{m-1} + \pi B$
+$L_1 + L_2z + L_3z^2 + ... L_mz^{m-1} \stackrel{?}{=}R_1+R_2z+R_3z^2\dots+R_mz^{m-1} + \pi B$
 
 ### Security analysis
-The left-hand-side and right-hand-side are both polynomials of degree $m$. If they are unequal to each other, then they intersect in at most $m$ points by the [Schwartz Zippel Lemma](https://www.rareskills.io/post/schwartz-zippel-lemma). If $m\ll p$ where $p$ is the order of the finite field, then again the probability of $z$ being an intersection point is negligible.
+The left-hand-side and right-hand-side are both polynomials of degree $m-1$. If they are unequal to each other, then they intersect in at most $m-1$ points by the [Schwartz Zippel Lemma](https://www.rareskills.io/post/schwartz-zippel-lemma). If $m\ll p$ where $p$ is the order of the finite field, then again the probability of $z$ being an intersection point is negligible.
 
 ## Random linear combinations of inner products
 
@@ -101,7 +101,7 @@ Because the two inner products share a common term, it is algebraically possible
 
 $\langle\mathbf{a}_L, \mathbf{a}_R + \mathbf{a}_W\rangle = v_1 + v_2$
 
-However, this is not secure from a soundness perspective because it is possible because that $\langle \mathbf{a}_L, \mathbf{a}_R\rangle \neq v_1$ and $\langle \mathbf{a}_L, \mathbf{a}_W\rangle\neq v_2$ but $\langle\mathbf{a}_L, \mathbf{a}_R + \mathbf{a}_W\rangle = v_1 + v_2$.
+However, this is not secure from a soundness perspective because it is possible that $\langle \mathbf{a}_L, \mathbf{a}_R\rangle \neq v_1$ and $\langle \mathbf{a}_L, \mathbf{a}_W\rangle\neq v_2$ but $\langle\mathbf{a}_L, \mathbf{a}_R + \mathbf{a}_W\rangle = v_1 + v_2$.
 
 As expected, we can solve this by using a random linear combination.
 

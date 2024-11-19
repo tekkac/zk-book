@@ -129,7 +129,7 @@ b^{a_j}=\underbrace{b\cdot b\cdot\dots\cdot b}_{{a_j} \text{ times}}
 $$
 
 $$
-b^{a_i +a_j}=\underbrace{b\cdot b\cdot\dots\cdot b}_{{a_i} \text{ times}}\cdot\underbrace{b\cdot b\cdot\dots\cdot b}_{{a_j} \text{ times}}
+b^{a_i + a_j}=\underbrace{b\cdot b\cdot\dots\cdot b}_{{a_i} \text{ times}} \cdot \underbrace{b \cdot b \cdot \dots \cdot b}_{a_j \text{ times}}
 $$
 
 $$
